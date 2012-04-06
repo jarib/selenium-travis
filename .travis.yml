@@ -1,0 +1,14 @@
+rvm:
+  - 1.9.2
+  - 1.9.3
+notifications:
+  recipients:
+    - jari.bakken@gmail.com
+  irc: "irc.freenode.net#selenium"
+before_script:
+  - ./install.sh
+env:
+  - DISPLAY=:99 WD_SPEC_DRIVER=unit
+  - DISPLAY=:99 WD_SPEC_DRIVER=firefox 
+  - DISPLAY=:99 WD_SPEC_DRIVER=chrome chrome_server=./chrome-linux/chromedriver chrome_binary=./chrome-linux/chrome
+  - DISPLAY=:99 WD_SPEC_DRIVER=remote
