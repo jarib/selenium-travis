@@ -8,20 +8,7 @@ require 'selenium/webdriver/spec_support'
 
 include Selenium
 
-if WebDriver::Platform.jruby?
-  require 'java'
-
-  [
-    Dir['build/**/*.jar'],
-    Dir['third_party/java/servlet-api/*.jar'],
-    'third_party/java/jetty/jetty-repacked-7.6.1.jar',
-  ].flatten.each { |jar| require jar }
-
-
-  GlobalTestEnv = WebDriver::SpecSupport::JRubyTestEnvironment.new
-else
-  GlobalTestEnv = WebDriver::SpecSupport::TestEnvironment.new
-end
+GlobalTestEnv = WebDriver::SpecSupport::TestEnvironment.new
 
 class Object
   include WebDriver::SpecSupport::Guards
@@ -46,3 +33,4 @@ WebDriver::Platform.exit_hook { GlobalTestEnv.quit }
 
 $stdout.sync = true
 GlobalTestEnv.unguarded = !!ENV['noguards']
+WebDriver::SpecSupport::Guards.print_env

@@ -9,6 +9,7 @@ module Selenium
           port        = opts.delete(:port) || DEFAULT_PORT
           profile     = opts.delete(:profile)
           http_client = opts.delete(:http_client)
+          proxy       = opts.delete(:proxy)
 
           @launcher   = create_launcher(port, profile)
 
@@ -18,14 +19,22 @@ module Selenium
 
           @launcher.launch
 
+          caps = Remote::Capabilities.firefox(:native_events => DEFAULT_ENABLE_NATIVE_EVENTS)
+          caps.proxy = proxy if proxy
+
           remote_opts = {
             :url                  => @launcher.url,
-            :desired_capabilities => Remote::Capabilities.firefox(:native_events => DEFAULT_ENABLE_NATIVE_EVENTS)
+            :desired_capabilities => caps
           }
 
           remote_opts.merge!(:http_client => http_client) if http_client
 
-          super(remote_opts)
+          begin
+            super(remote_opts)
+          rescue
+            @launcher.quit
+            raise
+          end
         end
 
         def browser
@@ -41,9 +50,9 @@ module Selenium
 
         def quit
           super
-          @launcher.quit
-
           nil
+        ensure
+          @launcher.quit
         end
 
         private

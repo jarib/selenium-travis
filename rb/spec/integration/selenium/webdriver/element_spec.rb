@@ -101,7 +101,7 @@ describe "Element" do
     loc.y.should >= 1
   end
 
-  not_compliant_on :browser => [:iphone, :safari] do
+  not_compliant_on :browser => [:iphone] do
     it "should get location once scrolled into view" do
       driver.navigate.to url_for("javascriptPage.html")
       loc = driver.find_element(:id, 'keyUp').location_once_scrolled_into_view
@@ -142,7 +142,8 @@ describe "Element" do
       style1 = element.css_value("background-color")
       style2 = element.style("background-color") # backwards compatibility
 
-      ["rgb(0, 128, 0)", "#008000"].should include(style1, style2)
+      acceptable = ["rgb(0, 128, 0)", "#008000", 'rgba(0,128,0,1)', 'rgba(0, 128, 0, 1)']
+      acceptable.should include(style1, style2)
     end
   end
 
@@ -156,15 +157,17 @@ describe "Element" do
     body.should eql(xbody)
   end
 
-  it "should know when two elements are not equal" do
-    driver.navigate.to url_for("simpleTest.html")
+  not_compliant_on :browser => :phantomjs do
+    it "should know when two elements are not equal" do
+      driver.navigate.to url_for("simpleTest.html")
 
-    elements = driver.find_elements(:tag_name, 'p')
-    p1 = elements.fetch(0)
-    p2 = elements.fetch(1)
+      elements = driver.find_elements(:tag_name, 'p')
+      p1 = elements.fetch(0)
+      p2 = elements.fetch(1)
 
-    p1.should_not == p2
-    p1.should_not eql(p2)
+      p1.should_not == p2
+      p1.should_not eql(p2)
+    end
   end
 
   it "should return the same #hash for equal elements when found by Driver#find_element" do

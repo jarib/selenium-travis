@@ -102,6 +102,30 @@ module Selenium
     end
 
     #
+    # The server port
+    #
+
+    attr_accessor :port
+
+    #
+    # The server timeout
+    #
+
+    attr_accessor :timeout
+
+    #
+    # Whether to launch the server in the background
+    #
+
+    attr_accessor :background
+
+    #
+    # Path to log file, or 'true' for stdout.
+    #
+
+    attr_accessor :log
+
+    #
     # @param [String] jar Path to the server jar.
     # @param [Hash] opts the options to create the server process with
     #
@@ -160,9 +184,10 @@ module Selenium
     private
 
     def self.net_http
-      if ENV['http_proxy']
-        http_proxy = ENV['http_proxy']
-        http_proxy = "http://#{http_proxy}" unless http_proxy =~ /^http:\/\//i
+      http_proxy = ENV['http_proxy'] || ENV['HTTP_PROXY']
+
+      if http_proxy
+        http_proxy = "http://#{http_proxy}" unless http_proxy.start_with?("http://")
         uri = URI.parse(http_proxy)
 
         Net::HTTP::Proxy(uri.host, uri.port)

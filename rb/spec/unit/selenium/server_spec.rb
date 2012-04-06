@@ -81,8 +81,13 @@ describe Selenium::Server do
   end
 
   it "automatically repairs http_proxy settings that do not start with http://" do
-    ENV['http_proxy'] = 'proxy.com'
-    Selenium::Server.net_http.proxy_address.should == 'proxy.com'
+    with_env("http_proxy" => "proxy.com") do
+      Selenium::Server.net_http.proxy_address.should == 'proxy.com'
+    end
+
+    with_env("HTTP_PROXY" => "proxy.com") do
+      Selenium::Server.net_http.proxy_address.should == 'proxy.com'
+    end
   end
 
   it "only downloads a jar if it is not present in the current directory" do
@@ -127,5 +132,19 @@ describe Selenium::Server do
     server.stub!(:socket).and_return(poller)
 
     lambda { server.start }.should raise_error(Selenium::Server::Error)
+  end
+
+  it "sets options after instantiation" do
+    File.should_receive(:exist?).with("selenium-server-test.jar").and_return(true)
+    server = Selenium::Server.new("selenium-server-test.jar")
+    server.port.should == 4444
+    server.timeout.should == 30
+    server.background.should be_false
+    server.log.should be_nil
+
+    server.port = 1234
+    server.timeout = 5
+    server.background = true
+    server.log = "/tmp/server.log"
   end
 end

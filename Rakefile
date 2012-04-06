@@ -20,28 +20,45 @@ task :selenium do
   $selenium_root = ENV['SELENIUM_ROOT'] or raise "must set SELENIUM_ROOT"
 end
 
-desc 'Import code and artifacts from the Selenium repo.'
-task :import => [:selenium] do
+task :copy_artifacts do
   ARTIFACTS.each do |from, to|
     absolute_to = File.join($project_root, to ? to : from)
     absolute_from = File.join($selenium_root, from)
   
-    FileUtils.rm_rf absolute_to, :noop => false, :verbose => true
+    FileUtils.rm_rf absolute_to, :verbose => true
     FileUtils.mkdir_p File.dirname(absolute_to)
-    FileUtils.cp_r(absolute_from, absolute_to, :noop => false, :verbose => true)
+    FileUtils.cp_r(absolute_from, absolute_to, :verbose => true)
   end
 end
 
+task :clean_svn_dirs do
+  Dir['**/.svn'].each { |e| rm_rf e, :verbose => true }
+end
+
+desc 'Import code and artifacts from the Selenium repo.'
+task :import => [:selenium, :copy_artifacts, :clean_svn_dirs]
+
+RSPEC_OPTS = "-fs --colour"
+
 RSpec::Core::RakeTask.new(:unit) do |t|
   t.pattern = "rb/spec/unit/**/*_spec.rb"
+  t.rspec_opts = RSPEC_OPTS
 end
 
 [:firefox, :ie, :remote, :chrome].each do |driver|
   RSpec::Core::RakeTask.new(driver) do |t|
     t.ruby_opts = "-Irb/spec/integration"
     t.pattern = "rb/spec/integration/selenium/webdriver{,#{driver}/**}/*_spec.rb"
+    t.rspec_opts = RSPEC_OPTS
   end
 end
+
+RSpec::Core::RakeTask.new(:rc_client) do |t|
+  t.ruby_opts = "-Irb/spec/integration"
+  t.pattern = "rb/spec/integration/selenium/client/{api,reporting,smoke}/*_spec.rb"
+  t.rspec_opts = RSPEC_OPTS
+end
+
 
 task :default => (ENV['WD_SPEC_DRIVER'] ||= 'unit')
 

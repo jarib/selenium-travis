@@ -7,8 +7,6 @@ module Selenium
         attr_reader :driver
 
         def initialize
-          puts "creating test env :: #{ruby_description}"
-
           @create_driver_error       = nil
           @create_driver_error_count = 0
 
@@ -56,7 +54,7 @@ module Selenium
         def remote_server
           @remote_server ||= (
             Selenium::Server.new(remote_server_jar,
-              :port       => PortProber.random,
+              :port       => PortProber.above(4444),
               :log        => !!$DEBUG,
               :background => true,
               :timeout    => 60
@@ -97,10 +95,6 @@ module Selenium
 
         private
 
-        def ruby_description
-          defined?(RUBY_DESCRIPTION) ? RUBY_DESCRIPTION : "ruby-#{RUBY_VERSION}"
-        end
-
         def root_folder
           @root_folder ||= File.expand_path("../../../../../../../", __FILE__)
         end
@@ -119,6 +113,8 @@ module Selenium
                        create_iphone_driver
                      when :safari
                        create_safari_driver
+                     when :phantomjs
+                       create_phantomjs_driver
                      else
                        WebDriver::Driver.for driver
                      end
@@ -157,7 +153,7 @@ module Selenium
         def create_remote_driver
           WebDriver::Driver.for(:remote,
             :desired_capabilities => remote_capabilities,
-            :url                  => remote_server.webdriver_url,
+            :url                  => ENV['WD_REMOTE_URL'] || remote_server.webdriver_url,
             :http_client          => keep_alive_client || http_client
           )
         end
@@ -192,6 +188,15 @@ module Selenium
           WebDriver::Driver.for :chrome,
                                 :native_events => native_events?
                                 # :http_client   => keep_alive_client || http_client
+        end
+
+        def create_phantomjs_driver
+          binary = ENV['phantomjs_binary']
+          if binary
+            WebDriver::PhantomJS.path = binary
+          end
+
+          WebDriver::Driver.for :phantomjs
         end
 
         def create_iphone_driver

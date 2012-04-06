@@ -1,6 +1,8 @@
 #/bin/sh
 
-CHROME_REVISION=127410
+set -x
+
+CHROME_REVISION=142538
 sh -e /etc/init.d/xvfb start
 
 if [[ "$WD_SPEC_DRIVER" = "chrome" ]]; then

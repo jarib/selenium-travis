@@ -3,19 +3,17 @@ require File.expand_path("../spec_helper", __FILE__)
 describe "Selenium::WebDriver::TargetLocator" do
   let(:wait) { Selenium::WebDriver::Wait.new }
 
-  not_compliant_on :browser => :safari do # 'maximum call stack size exceeded'
-    it "should find the active element" do
-      driver.navigate.to url_for("xhtmlTest.html")
-      driver.switch_to.active_element.should be_an_instance_of(WebDriver::Element)
-    end
+  it "should find the active element" do
+    driver.navigate.to url_for("xhtmlTest.html")
+    driver.switch_to.active_element.should be_an_instance_of(WebDriver::Element)
   end
 
-  not_compliant_on :browser => [:iphone, :safari] do
+  not_compliant_on :browser => [:iphone] do
     it "should switch to a frame" do
       driver.navigate.to url_for("iframes.html")
       driver.switch_to.frame("iframe1")
 
-      # TODO: expectations?
+      driver.find_element(:name, 'login').should be_kind_of(WebDriver::Element)
     end
 
     it "should switch to a frame by Element" do
@@ -24,7 +22,7 @@ describe "Selenium::WebDriver::TargetLocator" do
       iframe = driver.find_element(:tag_name => "iframe")
       driver.switch_to.frame(iframe)
 
-      # TODO: expectations?
+      driver.find_element(:name, 'login').should be_kind_of(WebDriver::Element)
     end
   end
 
@@ -101,7 +99,7 @@ describe "Selenium::WebDriver::TargetLocator" do
   end
 
   describe "alerts" do
-    not_compliant_on :browser => [:opera, :iphone, :safari] do
+    not_compliant_on :browser => [:opera, :iphone, :safari, :phantomjs] do
       it "allows the user to accept an alert" do
         driver.navigate.to url_for("alerts.html")
         driver.find_element(:id => "alert").click
@@ -112,26 +110,28 @@ describe "Selenium::WebDriver::TargetLocator" do
       end
     end
 
-    not_compliant_on({:browser => :chrome, :platform => :macosx}, # http://code.google.com/p/chromium/issues/detail?id=90519
+    not_compliant_on({:browser => :chrome, :platform => :macosx}, # http://code.google.com/p/chromedriver/issues/detail?id=26
                      {:browser => :opera},
                      {:browser => :iphone},
-                     {:browser => :safari}) do
+                     {:browser => :safari},
+                     {:browser => :phantomjs}) do
       it "allows the user to dismiss an alert" do
         driver.navigate.to url_for("alerts.html")
         driver.find_element(:id => "alert").click
 
-        driver.switch_to.alert.dismiss
+        alert = wait_for_alert
+        alert.dismiss
 
         driver.title.should == "Testing Alerts"
       end
     end
 
-    not_compliant_on :browser => [:opera, :iphone, :safari] do
+    not_compliant_on :browser => [:opera, :iphone, :safari, :phantomjs] do
       it "allows the user to set the value of a prompt" do
         driver.navigate.to url_for("alerts.html")
         driver.find_element(:id => "prompt").click
 
-        alert = driver.switch_to.alert
+        alert = wait_for_alert
         alert.send_keys "cheese"
         alert.accept
 
@@ -143,7 +143,7 @@ describe "Selenium::WebDriver::TargetLocator" do
         driver.navigate.to url_for("alerts.html")
         driver.find_element(:id => "alert").click
 
-        alert = driver.switch_to.alert
+        alert = wait_for_alert
         text = alert.text
         alert.accept
 
@@ -151,7 +151,7 @@ describe "Selenium::WebDriver::TargetLocator" do
       end
     end
 
-    not_compliant_on :browser => [:ie, :opera, :iphone, :safari] do
+    not_compliant_on :browser => [:ie, :opera, :iphone, :safari, :phantomjs] do
       it "raises NoAlertOpenError if no alert is present" do
         lambda { driver.switch_to.alert }.should raise_error(
           Selenium::WebDriver::Error::NoAlertOpenError, /alert|modal dialog/i)
@@ -162,6 +162,7 @@ describe "Selenium::WebDriver::TargetLocator" do
       it "raises an UnhandledAlertError if an alert has not been dealt with" do
         driver.navigate.to url_for("alerts.html")
         driver.find_element(:id => "alert").click
+        wait_for_alert
 
         lambda { driver.title }.should raise_error(Selenium::WebDriver::Error::UnhandledAlertError)
 

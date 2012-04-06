@@ -28,12 +28,12 @@ module Selenium
 
       #
       # Click this element. If this causes a new page to load, this method will
-      # attempt to block until the page has loaded.  At this point, you should 
-      # discard all references to this element and any further operations 
+      # attempt to block until the page has loaded.  At this point, you should
+      # discard all references to this element and any further operations
       # performed on this element will raise a StaleElementReferenceError
       # unless you know that the element and the page will still be present. If
-      # click() causes a new page to be loaded via an event or is done by 
-      # sending a native event then the method will *not* wait for it to be 
+      # click() causes a new page to be loaded via an event or is done by
+      # sending a native event then the method will *not* wait for it to be
       # loaded and the caller should verify that a new page has been loaded.
       #
       # There are some preconditions for an element to be clicked.  The element
@@ -49,13 +49,13 @@ module Selenium
       # @raise [StaleElementReferenceError] if the element no longer exists as
       #  defined
       #
-      
+
       def click
         bridge.clickElement @id
       end
 
       #
-      # Get the tag name of the element. 
+      # Get the tag name of the element.
       #
       # @example Get the tagname of an INPUT element(returns "input")
       #
@@ -128,7 +128,13 @@ module Selenium
       alias_method :send_key, :send_keys
 
       #
-      # Clear this element
+      # If this element is a text entry element, this will clear the value. Has no effect on other
+      # elements. Text entry elements are INPUT and TEXTAREA elements.
+      #
+      # Note that the events fired by this event may not be as you'd expect.  In particular, we don't
+      # fire any keyboard or mouse events.  If you want to ensure keyboard events are
+      # fired, consider using #send_keys with the backspace key. To ensure you get a change event, 
+      # consider following with a call to #send_keys with the tab key.
       #
 
       def clear
@@ -256,7 +262,7 @@ module Selenium
       #
 
       def to_json(*args)
-        MultiJson.encode as_json
+        WebDriver.json_dump as_json
       end
 
       #

@@ -150,7 +150,26 @@ module Selenium
       end
 
       def ip
-        IPSocket.getaddress(Socket.gethostname)
+        orig = Socket.do_not_reverse_lookup
+        Socket.do_not_reverse_lookup = true
+
+        begin
+          UDPSocket.open do |s|
+            s.connect '8.8.8.8', 53
+            return s.addr.last
+          end
+        ensure
+          Socket.do_not_reverse_lookup = orig
+        end
+      rescue Errno::ENETUNREACH, Errno::EHOSTUNREACH
+        # no external ip
+      end
+
+      def interfaces
+        interfaces = Socket.getaddrinfo("localhost", 8080).map { |e| e[3] }
+        interfaces += ["0.0.0.0", Platform.ip]
+
+        interfaces.compact.uniq
       end
 
     end # Platform
@@ -158,14 +177,15 @@ module Selenium
 end # Selenium
 
 if __FILE__ == $0
-  p :engine    => Selenium::WebDriver::Platform.engine,
-    :os        => Selenium::WebDriver::Platform.os,
-    :ruby187?  => Selenium::WebDriver::Platform.ruby187?,
-    :ruby19?   => Selenium::WebDriver::Platform.ruby19?,
-    :jruby?    => Selenium::WebDriver::Platform.jruby?,
-    :windows?  => Selenium::WebDriver::Platform.windows?,
-    :home      => Selenium::WebDriver::Platform.home,
-    :bitsize   => Selenium::WebDriver::Platform.bitsize,
-    :localhost => Selenium::WebDriver::Platform.localhost,
-    :ip        => Selenium::WebDriver::Platform.ip
+  p :engine     => Selenium::WebDriver::Platform.engine,
+    :os         => Selenium::WebDriver::Platform.os,
+    :ruby187?   => Selenium::WebDriver::Platform.ruby187?,
+    :ruby19?    => Selenium::WebDriver::Platform.ruby19?,
+    :jruby?     => Selenium::WebDriver::Platform.jruby?,
+    :windows?   => Selenium::WebDriver::Platform.windows?,
+    :home       => Selenium::WebDriver::Platform.home,
+    :bitsize    => Selenium::WebDriver::Platform.bitsize,
+    :localhost  => Selenium::WebDriver::Platform.localhost,
+    :ip         => Selenium::WebDriver::Platform.ip,
+    :interfaces => Selenium::WebDriver::Platform.interfaces
 end

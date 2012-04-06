@@ -4,6 +4,19 @@ module Selenium
       module Guards
 
         class << self
+          def print_env
+            puts "\nRunning Ruby specs:\n\n"
+
+            env = current_env.merge(:ruby => defined?(RUBY_DESCRIPTION) ? RUBY_DESCRIPTION : "ruby-#{RUBY_VERSION}")
+
+            just = current_env.keys.map { |e| e.to_s.size }.max
+            env.each do |key, value|
+              puts "#{key.to_s.rjust(just)}: #{value}"
+            end
+
+            puts "\n"
+          end
+
           def guards
             @guards ||= Hash.new { |hash, key| hash[key] = [] }
           end
@@ -11,7 +24,7 @@ module Selenium
           def record(guard_name, options, data)
             options.each do |opts|
               opts = current_env.merge(opts)
-              key = opts.values_at(:browser, :driver, :platform, :native).join('.')
+              key = opts.values_at(*current_env.keys).join('.')
               guards[key] << [guard_name, data]
             end
           end
@@ -40,10 +53,11 @@ module Selenium
 
           def current_env
             {
-              :browser  => GlobalTestEnv.browser,
-              :driver   => GlobalTestEnv.driver,
-              :platform => Platform.os,
-              :native   => GlobalTestEnv.native_events?
+              :browser        => GlobalTestEnv.browser,
+              :driver         => GlobalTestEnv.driver,
+              :platform       => Platform.os,
+              :native         => GlobalTestEnv.native_events?,
+              :window_manager => !!ENV['DESKTOP_SESSION']
             }
           end
 
@@ -55,7 +69,7 @@ module Selenium
           #   - guard this spec for Chrome on OSX and Opera on any OS
 
           def env_matches?(opts)
-            opts.any? { |env|
+            res = opts.any? { |env|
               env.all? { |key, value|
                 if value.kind_of?(Array)
                   value.include? current_env[key]
@@ -64,7 +78,17 @@ module Selenium
                 end
               }
             }
+
+            p res => [opts, current_env] if @debug_guard
+            res
           end
+        end
+
+        def debug_guard(&blk)
+          @debug_guard = true
+          yield
+        ensure
+          @debug_guard = false
         end
 
         def not_compliant_on(*opts, &blk)

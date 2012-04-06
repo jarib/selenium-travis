@@ -1,72 +1,86 @@
 module Selenium
   module WebDriver
     module IE
-
-      #
-      # @api private
-      #
-
       class Server
-        extend FFI::Library
 
-        if Platform.bitsize == 64
-          ffi_lib WebDriver::IE::DLLS[:x64]
-        else
-          ffi_lib WebDriver::IE::DLLS[:win32]
+        STOP_TIMEOUT = 5
+
+        def self.get
+          binary = IE.driver_path || Platform.find_binary("IEDriverServer")
+          if binary
+            new(binary)
+          else
+            raise Error::WebDriverError,
+              "Unable to find standalone executable. Please download the IEDriverServer from http://code.google.com/p/selenium/downloads/list and place the executable on your PATH."
+          end
         end
 
-        ffi_convention :stdcall
+        attr_accessor :log_level, :log_file
 
-        attach_function :start_server,  :StartServer,           [:int],     :pointer
-        attach_function :stop_server,   :StopServer,            [:pointer], :void
-        attach_function :session_count, :GetServerSessionCount, [],         :int
-        attach_function :current_port,  :GetServerPort,         [],         :int
-        attach_function :is_running,    :ServerIsRunning,       [],         :bool
+        def initialize(binary_path, opts = {})
+          Platform.assert_executable binary_path
 
-        def initialize
-          @handle = nil
+          @binary_path = binary_path
+          @process = nil
+
+          opts = opts.dup
+          @log_level   = opts.delete(:log_level)
+          @log_file    = opts.delete(:log_file)
+
+          unless opts.empty?
+            raise ArgumentError, "invalid option#{'s' if opts.size != 1}: #{opts.inspect}"
+          end
+
         end
 
-        #
-        # Starts the server, communicating on the specified port, if it is not already running
-        #
+        def start(port, timeout)
+          return @port if running?
 
-        def start(start_port, timeout)
-          return port if running?
-          @handle = self.class.start_server(start_port)
+          @port = port
 
-          unless SocketPoller.new(Platform.localhost, start_port, timeout).connected?
+          @process = ChildProcess.new(@binary_path, *server_args)
+          @process.io.inherit! if $DEBUG
+          @process.start
+
+          unless SocketPoller.new(Platform.localhost, @port, timeout).connected?
             raise Error::WebDriverError, "unable to connect to IE server within #{timeout} seconds"
           end
 
-          start_port
+          Platform.exit_hook { stop }
+
+          @port
         end
 
         def stop
-          return if session_count != 0 || @handle.nil?
-          self.class.stop_server @handle
-          @handle = nil
-        end
-
-        def running?
-          self.class.is_running
+          if running?
+            @process.stop STOP_TIMEOUT
+          end
         end
 
         def port
-          self.class.current_port
+          @port
         end
 
         def uri
           "http://#{Platform.localhost}:#{port}"
         end
 
-        private
-
-        def session_count
-          self.class.session_count
+        def running?
+          @process && @process.alive?
         end
 
-      end # Server
-    end # IE
-  end # WebDriver
-end # Selenium
+        private
+
+        def server_args
+          args = ["--port=#{@port}"]
+
+          args << "--log-level=#{@log_level.to_s.upcase}" if @log_level
+          args << "--log-file=#{@log_file}" if @log_file
+
+          args
+        end
+
+      end
+    end
+  end
+end
