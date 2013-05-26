@@ -11,5 +11,9 @@ if [[ "$WD_SPEC_DRIVER" = "chrome" ]]; then
   unzip chrome-linux.zip
   curl -L "http://commondatastorage.googleapis.com/chromium-browser-snapshots/Linux/$CHROME_REVISION/chrome-linux.test/chromedriver" > chrome-linux/chromedriver
   chmod +x chrome-linux/chromedriver
+  
+  ls -la chrome-linux
+  file chrome-linux/chromedriver
+  uname -a
 fi
 
