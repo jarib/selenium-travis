@@ -1,7 +1,6 @@
 jdk:
   - openjdk6
 rvm:
-  - 1.8.7
   - 1.9.3
   - jruby
   - rbx-19mode
@@ -14,7 +13,7 @@ before_script:
   - ./install.sh
 env:
   - DISPLAY=:99 WD_SPEC_DRIVER=unit
-  - DISPLAY=:99 WD_SPEC_DRIVER=firefox 
+  - DISPLAY=:99 WD_SPEC_DRIVER=firefox
   - DISPLAY=:99 WD_SPEC_DRIVER=chrome chrome_server=./chrome-linux/chromedriver chrome_binary=./chrome-linux/chrome
   - DISPLAY=:99 WD_SPEC_DRIVER=remote
   - DISPLAY=:99 WD_SPEC_DRIVER=rc_client SELENIUM_RC_TIMEOUT=120
