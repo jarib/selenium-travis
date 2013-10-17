@@ -73,12 +73,20 @@ module Selenium
             }.merge(opts))
           end
 
+          def htmlunitwithjs(opts = {})
+            new({
+              :browser_name => "htmlunit",
+              :javascript_enabled => true
+            }.merge(opts))
+          end
+
           def internet_explorer(opts = {})
             new({
               :browser_name          => "internet explorer",
               :platform              => :windows,
               :takes_screenshot      => true,
-              :css_selectors_enabled => true
+              :css_selectors_enabled => true,
+              :native_events         => true
             }.merge(opts))
           end
           alias_method :ie, :internet_explorer
