@@ -2,7 +2,7 @@
 
 set -x
 
-CHROME_REVISION="229207"
+CHROME_REVISION="228570"
 CHROMEDRIVER_VERSION="2.4"
 sh -e /etc/init.d/xvfb start
 
