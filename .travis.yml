@@ -13,11 +13,11 @@ notifications:
 before_script:
   - ./install.sh
 env:
-  - DISPLAY=:99 WD_SPEC_DRIVER=unit
-  - DISPLAY=:99 WD_SPEC_DRIVER=firefox
-  - DISPLAY=:99 WD_SPEC_DRIVER=chrome chrome_server=./chrome-linux/chromedriver chrome_binary=./chrome-linux/chrome
-  - DISPLAY=:99 WD_SPEC_DRIVER=remote
-  - DISPLAY=:99 WD_SPEC_DRIVER=rc_client SELENIUM_RC_TIMEOUT=120
+  - localhost=travis DISPLAY=:99 WD_SPEC_DRIVER=unit
+  - localhost=travis DISPLAY=:99 WD_SPEC_DRIVER=firefox
+  - localhost=travis DISPLAY=:99 WD_SPEC_DRIVER=chrome chrome_server=./chrome-linux/chromedriver chrome_binary=./chrome-linux/chrome
+  - localhost=travis DISPLAY=:99 WD_SPEC_DRIVER=remote
+  - localhost=travis DISPLAY=:99 WD_SPEC_DRIVER=rc_client SELENIUM_RC_TIMEOUT=120
 matrix:
   allow_failures:
     - rvm: ruby-head
