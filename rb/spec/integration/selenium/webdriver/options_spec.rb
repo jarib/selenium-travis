@@ -4,8 +4,6 @@ describe "Options" do
   describe "cookie management" do
     it "should get all" do
       driver.navigate.to url_for("xhtmlTest.html")
-      p current_url: driver.current_url
-      
       driver.manage.add_cookie :name => "foo", :value => "bar"
 
       cookies = driver.manage.all_cookies
@@ -17,7 +15,6 @@ describe "Options" do
 
     it "should delete one" do
       driver.navigate.to url_for("xhtmlTest.html")
-      p current_url: driver.current_url
 
       driver.manage.add_cookie :name => "foo", :value => "bar"
       driver.manage.delete_cookie("foo")
@@ -25,7 +22,6 @@ describe "Options" do
 
     it "should delete all" do
       driver.navigate.to url_for("xhtmlTest.html")
-      p current_url: driver.current_url
 
       driver.manage.add_cookie :name => "foo", :value => "bar"
       driver.manage.delete_all_cookies
