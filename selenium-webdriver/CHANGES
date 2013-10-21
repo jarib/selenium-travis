@@ -1,7 +1,14 @@
+2.38.0 (???)
+============
+
+* Enforce required ruby version in gemspec, not just through rubyzip.
+* Expose the logging API (beta, subject to change) in the Ruby client: driver.manage.logs #=> Selenium::WebDriver::Logs
+
+
 2.37.0 (2013-10-18)
 ===================
 
-* Dropped support for Ruby < 1.9.2
+* As of this version, selenium-webdriver no longer supports Ruby < 1.9.2
 * Depend on rubyzip ~> 1.0.0
 * Added SOCKS proxy support
 * Fixed support for SVG documents in the atoms.
@@ -20,7 +27,7 @@ IE:
   * Use native events by default, also for remote IE (#4695)
 Safari:
   * Enable screenshots and input devices in the client.
-  
+
 2.35.1 (2013-08-26)
 ===================
 
