@@ -20,4 +20,5 @@ env:
   - localhost=localhost.localdomain DISPLAY=:99 WD_SPEC_DRIVER=rc_client SELENIUM_RC_TIMEOUT=120
 matrix:
   allow_failures:
+    - rvm: rbx-2.1.1
     - rvm: ruby-head
