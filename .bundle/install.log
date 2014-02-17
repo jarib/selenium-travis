@@ -1,0 +1,26 @@
+# Logfile created on 2014-02-17 21:29:16 +0100 by logger.rb/v1.2.7
+I, [2014-02-17T21:29:16.353348 #82857]  INFO -- : 2:  rake (0.9.2.2) from /opt/boxen/rbenv/versions/2.1.0-github1/lib/ruby/gems/2.1.0/specifications/rake-0.9.2.2.gemspec
+I, [2014-02-17T21:29:16.353475 #82859]  INFO -- : 4:  addressable (2.3.5) from /opt/boxen/rbenv/versions/2.1.0-github1/lib/ruby/gems/2.1.0/specifications/addressable-2.3.5.gemspec
+I, [2014-02-17T21:29:16.353426 #82856]  INFO -- : 1:  ffi (1.9.3) from /opt/boxen/rbenv/versions/2.1.0-github1/lib/ruby/gems/2.1.0/specifications/ffi-1.9.3.gemspec
+I, [2014-02-17T21:29:16.353510 #82861]  INFO -- : 6:  builder (3.2.2) from /opt/boxen/rbenv/versions/2.1.0-github1/lib/ruby/gems/2.1.0/specifications/builder-3.2.2.gemspec
+I, [2014-02-17T21:29:16.353645 #82858]  INFO -- : 3:  coderay (1.0.9) from /opt/boxen/rbenv/versions/2.1.0-github1/lib/ruby/gems/2.1.0/specifications/coderay-1.0.9.gemspec
+I, [2014-02-17T21:29:16.354342 #82860]  INFO -- : 5:  diff-lcs (1.2.4) from /opt/boxen/rbenv/versions/2.1.0-github1/lib/ruby/gems/2.1.0/specifications/diff-lcs-1.2.4.gemspec
+I, [2014-02-17T21:29:16.354535 #82862]  INFO -- : 7:  safe_yaml (0.9.7) from /opt/boxen/rbenv/versions/2.1.0-github1/lib/ruby/gems/2.1.0/specifications/safe_yaml-0.9.7.gemspec
+I, [2014-02-17T21:29:16.355103 #82855]  INFO -- : 0:  json (1.8.1) from /opt/boxen/rbenv/versions/2.1.0-github1/lib/ruby/gems/2.1.0/specifications/default/json-1.8.1.gemspec
+I, [2014-02-17T21:29:16.355458 #82856]  INFO -- : 1:  method_source (0.8.2) from /opt/boxen/rbenv/versions/2.1.0-github1/lib/ruby/gems/2.1.0/specifications/method_source-0.8.2.gemspec
+I, [2014-02-17T21:29:16.355492 #82861]  INFO -- : 6:  multi_json (1.8.4) from /opt/boxen/rbenv/versions/2.1.0-github1/lib/ruby/gems/2.1.0/specifications/multi_json-1.8.4.gemspec
+I, [2014-02-17T21:29:16.355622 #82859]  INFO -- : 4:  slop (3.4.6) from /opt/boxen/rbenv/versions/2.1.0-github1/lib/ruby/gems/2.1.0/specifications/slop-3.4.6.gemspec
+I, [2014-02-17T21:29:16.356022 #82860]  INFO -- : 5:  rspec-core (2.14.6) from /opt/boxen/rbenv/versions/2.1.0-github1/lib/ruby/gems/2.1.0/specifications/rspec-core-2.14.6.gemspec
+I, [2014-02-17T21:29:16.356100 #82858]  INFO -- : 3:  rack (1.5.2) from /opt/boxen/rbenv/versions/2.1.0-github1/lib/ruby/gems/2.1.0/specifications/rack-1.5.2.gemspec
+I, [2014-02-17T21:29:16.356181 #82857]  INFO -- : 2:  rspec-mocks (2.14.4) from /opt/boxen/rbenv/versions/2.1.0-github1/lib/ruby/gems/2.1.0/specifications/rspec-mocks-2.14.4.gemspec
+I, [2014-02-17T21:29:16.356200 #82862]  INFO -- : 7:  rubyzip (1.1.0) from /opt/boxen/rbenv/versions/2.1.0-github1/lib/ruby/gems/2.1.0/specifications/rubyzip-1.1.0.gemspec
+I, [2014-02-17T21:29:16.356568 #82856]  INFO -- : 1:  bundler (1.5.1) from /opt/boxen/rbenv/versions/2.1.0-github1/lib/ruby/gems/2.1.0/specifications/bundler-1.5.1.gemspec
+I, [2014-02-17T21:29:16.356594 #82859]  INFO -- : 4:  ci_reporter (1.6.9) from /opt/boxen/rbenv/versions/2.1.0-github1/lib/ruby/gems/2.1.0/specifications/ci_reporter-1.6.9.gemspec
+I, [2014-02-17T21:29:16.356734 #82855]  INFO -- : 0:  websocket (1.0.7) from /opt/boxen/rbenv/versions/2.1.0-github1/lib/ruby/gems/2.1.0/specifications/websocket-1.0.7.gemspec
+I, [2014-02-17T21:29:16.356707 #82861]  INFO -- : 6:  childprocess (0.5.0) from /opt/boxen/rbenv/versions/2.1.0-github1/lib/ruby/gems/2.1.0/specifications/childprocess-0.5.0.gemspec
+I, [2014-02-17T21:29:16.357013 #82858]  INFO -- : 3:  crack (0.4.1) from /opt/boxen/rbenv/versions/2.1.0-github1/lib/ruby/gems/2.1.0/specifications/crack-0.4.1.gemspec
+I, [2014-02-17T21:29:16.357149 #82860]  INFO -- : 5:  rspec-expectations (2.14.3) from /opt/boxen/rbenv/versions/2.1.0-github1/lib/ruby/gems/2.1.0/specifications/rspec-expectations-2.14.3.gemspec
+I, [2014-02-17T21:29:16.357364 #82857]  INFO -- : 2:  pry (0.9.12.2) from /opt/boxen/rbenv/versions/2.1.0-github1/lib/ruby/gems/2.1.0/specifications/pry-0.9.12.2.gemspec
+I, [2014-02-17T21:29:16.357975 #82859]  INFO -- : 4:  webmock (1.7.10) from /opt/boxen/rbenv/versions/2.1.0-github1/lib/ruby/gems/2.1.0/specifications/webmock-1.7.10.gemspec
+I, [2014-02-17T21:29:16.358159 #82861]  INFO -- : 6:  rspec (2.14.1) from /opt/boxen/rbenv/versions/2.1.0-github1/lib/ruby/gems/2.1.0/specifications/rspec-2.14.1.gemspec
+I, [2014-02-17T21:29:16.663167 #82862]  INFO -- : 7:  selenium-webdriver (2.40.0.rc1) from /Users/fijabakk/src/selenium-travis/selenium-webdriver/selenium-webdriver.gemspec
