@@ -5,10 +5,11 @@ require 'rspec/core/rake_task'
 $project_root = File.dirname(__FILE__)
 
 ARTIFACTS = {
-    "build/rb" => "selenium-webdriver",
-    "rb/spec" => nil,
+    "build/rb"                                                                    => "selenium-webdriver",
+    "rb/spec"                                                                     => nil,
     "build/java/server/test/org/openqa/selenium/server-with-tests-standalone.jar" => nil,
-    "common/src/web" => nil
+    "common/src/web"                                                              => nil,
+    'java/client/test/org/openqa/selenium/safari/setAttribute.safariextz'         => nil
 }
 
 CLEAN << "selenium-webdriver"
