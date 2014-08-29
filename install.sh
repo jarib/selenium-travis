@@ -2,7 +2,7 @@
 
 set -x
 
-export CHROME_REVISION="290621"
+export CHROME_REVISION="290620"
 export CHROMEDRIVER_VERSION="2.10"
 
 if [[ "$WD_SPEC_DRIVER" = "chrome" ]]; then
@@ -10,7 +10,7 @@ if [[ "$WD_SPEC_DRIVER" = "chrome" ]]; then
 
   sudo apt-get install -y unzip libxss1
 
-  curl -L -O "http://commondatastorage.googleapis.com/chromium-browser-snapshots/Linux_x64/${CHROME_REVISION}/chrome-linux.zip"
+  curl --fail -L -O "http://commondatastorage.googleapis.com/chromium-browser-snapshots/Linux_x64/${CHROME_REVISION}/chrome-linux.zip"
   unzip chrome-linux.zip
 
   # chrome sandbox doesn't currently work on travis: https://github.com/travis-ci/travis-ci/issues/938
