@@ -2,8 +2,8 @@
 
 set -x
 
-export CHROME_REVISION="228611"
-export CHROMEDRIVER_VERSION="2.9"
+export CHROME_REVISION="290621"
+export CHROMEDRIVER_VERSION="2.10"
 
 if [[ "$WD_SPEC_DRIVER" = "chrome" ]]; then
   sudo chmod 1777 /dev/shm
