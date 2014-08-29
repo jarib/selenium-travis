@@ -39,7 +39,7 @@ end
 desc 'Import code and artifacts from the Selenium repo.'
 task :import => [:selenium, :copy_artifacts, :clean_svn_dirs]
 
-RSPEC_OPTS = "-fs --colour"
+RSPEC_OPTS = "-f doc --colour"
 
 RSpec::Core::RakeTask.new(:unit) do |t|
   t.pattern = "rb/spec/unit/**/*_spec.rb"
