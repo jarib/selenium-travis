@@ -9,7 +9,7 @@ ARTIFACTS = {
     "rb/spec"                                                                     => nil,
     "build/java/server/test/org/openqa/selenium/server-with-tests-standalone.jar" => nil,
     "common/src/web"                                                              => nil,
-    'java/client/test/org/openqa/selenium/safari/setAttribute.safariextz'         => nil
+    'build/javascript/safari-driver/prebuilt/SafariDriver.safariextz'             => nil
 }
 
 CLEAN << "selenium-webdriver"
